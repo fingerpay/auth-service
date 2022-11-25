@@ -1,0 +1,69 @@
+version: "3"
+
+services:
+  fastapi:
+    build:
+      context: .
+      dockerfile: ./docker/fastapi/Dockerfile
+    container_name: "auth-service-fastapi"
+    depends_on:
+      - "postgres"
+    ports:
+      - "8080:8000"
+    networks:
+      auth-service-docker-nw:
+        ipv4_address: 172.16.238.10
+    volumes:
+      - .:/deploy/auth-service
+      # .venv をマウントしないようにするために Volume として分離させる
+      - auth-service-fastapi-venv:/deploy/auth-service/.venv
+    environment:
+      FP_AUTH_IS_DEBUG: ${FP_AUTH_IS_DEBUG}
+      FP_AUTH_POSTGRES_USER_NAME: ${FP_AUTH_POSTGRES_USER_NAME}
+      FP_AUTH_POSTGRES_PASSWORD: ${FP_AUTH_POSTGRES_PASSWORD}
+      FP_AUTH_POSTGRES_DB_NAME: ${FP_AUTH_POSTGRES_DB_NAME}
+    working_dir: /deploy/auth-service
+    entrypoint: >
+      bash ./wait_postgres.sh
+      ${FP_AUTH_POSTGRES_USER_NAME} ${FP_AUTH_POSTGRES_PASSWORD}
+      172.16.238.20 5432 ${FP_AUTH_POSTGRES_DB_NAME}
+      "poetry run uvicorn api.main:app --host 0.0.0.0 --reload"
+    restart: unless-stopped
+    tty: true
+
+  postgres:
+    build:
+      context: .
+      dockerfile: docker/postgres/Dockerfile
+    container_name: "auth-service-postgres"
+    environment:
+      POSTGRES_USER: ${FP_AUTH_POSTGRES_USER_NAME}
+      POSTGRES_PASSWORD: ${FP_AUTH_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${FP_AUTH_POSTGRES_DB_NAME}
+    ports:
+      - "5432:5432"
+    networks:
+      auth-service-docker-nw:
+        ipv4_address: 172.16.238.20
+    volumes:
+      - auth-service-postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    tty: true
+
+networks:
+  auth-service-docker-nw:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "true"
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+        - subnet: 2001:3984:3989::/64
+
+volumes:
+  auth-service-postgres-data:
+    driver: local
+
+  auth-service-fastapi-venv:
+    driver: local
