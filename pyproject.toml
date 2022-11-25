@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "fingerpay-auth-service"
+version = "0.1.0"
+description = "A RESTAPI Service for user authentication constructed on FastAPI"
+authors = ["ITO Manaki <colk@fingerpay.app>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.87.0"
+uvicorn = {extras = ["standard"], version = "^0.20.0"}
+fastapi-sqlalchemy = "^0.2.1"
+pydantic = "^1.10.2"
+alembic = "^1.8.1"
+psycopg = "^3.1.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
