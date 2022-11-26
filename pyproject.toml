@@ -12,7 +12,9 @@ uvicorn = {extras = ["standard"], version = "^0.20.0"}
 fastapi-sqlalchemy = "^0.2.1"
 pydantic = "^1.10.2"
 alembic = "^1.8.1"
-psycopg = "^3.1.4"
+sqlalchemy = "^1.4.44"
+psycopg2 = "^2.9.5"
+asyncpg = "^0.27.0"
 
 
 [build-system]
