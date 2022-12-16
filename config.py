@@ -1,7 +1,5 @@
-from typing import Optional, TypeVar
+from typing import Optional
 from os import getenv, environ
-
-T = TypeVar('T')
 
 # Optional
 IS_DEBUG: Optional[bool] = None if getenv("FP_AUTH_IS_DEBUG") is None else bool("FP_AUTH_IS_DEBUG")
@@ -12,6 +10,8 @@ POSTGRES_PASSWORD: str = environ["FP_AUTH_POSTGRES_PASSWORD"]
 POSTGRES_DB_NAME: str = environ["FP_AUTH_POSTGRES_DB_NAME"]
 POSTGRES_HOST: str = environ["FP_AUTH_POSTGRES_HOST"]
 POSTGRES_PORT: int = int(environ["FP_AUTH_POSTGRES_PORT"])
+
+FIREBASE_KEY_PATH: str = environ["FP_AUTH_FIREBASE_KEY_PATH"]
 
 # Evaluated
 ASYNC_POSTGRES_URL: str = f"postgresql+asyncpg://" \
