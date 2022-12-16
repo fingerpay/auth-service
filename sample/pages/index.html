@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Firebase Auth for Google</title>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css"/>
+    <style>h1 {
+        text-align: center;
+    }</style>
+</head>
+<body>
+<h1>Firebase Auth for Google</h1>
+<div id="firebaseui-auth-container"></div>
+
+<!-- Loads Firebase Library -->
+<!-- Firebase ライブラリの読み込み -->
+<script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/ui/3.5.2/firebase-ui-auth__ja.js"></script>
+
+<!-- Loads and initializes a Firebase app -->
+<!-- Firebase app の読み込みと初期化 -->
+<script src="/config.js"></script>
+
+<script>
+    //----------------------------------------------
+    // Firebase UIの設定
+    //----------------------------------------------
+    var uiConfig = {
+        // ログイン完了時のリダイレクト先
+        signInSuccessUrl: '/done.html',
+
+        // 利用する認証機能 ( Google アカウントのみ )
+        signInOptions: [
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID
+        ],
+    };
+
+    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+    ui.start('#firebaseui-auth-container', uiConfig);
+</script>
+</body>
+</html>
