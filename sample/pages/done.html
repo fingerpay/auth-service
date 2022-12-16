@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Firebase Auth for Google</title>
+</head>
+<body>
+<h1>...Please wait</h1>
+<div id="info"></div>
+
+<!-- Loads Firebase Library -->
+<!-- Firebase ライブラリの読み込み -->
+<script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-auth.js"></script>
+
+<!-- Loads and initializes a Firebase app -->
+<!-- Firebase app の読み込みと初期化 -->
+<script src="/config.js"></script>
+
+<script>
+    firebase.auth().onAuthStateChanged((user) => {
+        let h1 = document.querySelector('h1');
+        let info = document.querySelector('#info');
+
+        // Call firebase.auth().currentUser.getIdToken() to receive JWT token
+        // user.getIdToken() can be used too
+        // firebase.auth().currentUser.getIdToken() を呼び出して JWT トークンを受け取り
+        //user.getIdToken() でも同じ結果を得られます
+        firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
+            console.log("DANGER!!!");
+            console.log("The following string is used to IT'S YOU!");
+            console.log("So, keep secret the following string:")
+            console.log(idToken);
+        })
+
+        if (user) {
+            h1.innerText = 'Sign In Complete!';
+            info.innerHTML = `Signed in as ${user.displayName}<br>` +
+                `(UID: ${user.uid}}<br>`;
+        } else {
+            h1.innerText = 'Not Signed In';
+        }
+    });
+</script>
+</body>
+</html>
