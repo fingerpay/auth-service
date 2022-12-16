@@ -1,4 +1,4 @@
-# AUTH SERVICE - Building Environment
+# AUTH SERVICE - Using Sample Client
 
 A documentation for using sample client of this service.
 English version of this document **is not available**.
