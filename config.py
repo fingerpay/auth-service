@@ -1,7 +1,5 @@
-from typing import Optional, TypeVar
+from typing import Optional
 from os import getenv, environ
-
-T = TypeVar('T')
 
 # Optional
 IS_DEBUG: Optional[bool] = None if getenv("FP_AUTH_IS_DEBUG") is None else bool("FP_AUTH_IS_DEBUG")
