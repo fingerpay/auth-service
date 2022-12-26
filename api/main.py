@@ -1,9 +1,10 @@
-from fastapi import FastAPI, Depends
-from api.user import get_user
+from fastapi import FastAPI
+
+from api.routers import jwt
+from api.routers import about
+from api.routers import user
 
 app = FastAPI()
-
-
-@app.get("/me")
-async def hello_user(user=Depends(get_user)):
-    return {"isAuthenticated": True, "name": user["name"], "user_id": user["user_id"], "uid": user["uid"]}
+app.include_router(jwt.router)
+app.include_router(about.router)
+app.include_router(user.router)

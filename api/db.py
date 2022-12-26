@@ -1,16 +1,14 @@
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
-from config import ASYNC_POSTGRES_URL
+from config import SYNC_SQLITE_URL
 
-async_engine = create_async_engine(ASYNC_POSTGRES_URL, echo=True)
-async_session = sessionmaker(
-    autocommit=False, autoflush=False, bind=async_engine, class_=AsyncSession
+SQLALCHEMY_DATABASE_URL = SYNC_SQLITE_URL
+
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
 )
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
-
-
-async def get_db():
-    async with async_session() as session:
-        yield session
